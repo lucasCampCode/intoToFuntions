@@ -67,9 +67,25 @@ namespace HelloWorld
 
         }
 
+        string items()
+        {
+            char input = ' ';
+            string itemName = " ";
+            while (input != '1')
+            {
+                
+                Console.WriteLine("press 1 to leave");
+            }
+            return itemName;
+        }
+
         void Inventory() 
-        { 
-            
+        {
+            char input = ' ';
+            while (input != '1')
+            {
+                Console.WriteLine("press 1 to leave");
+            }
         }
 
         char GetInput(string option1, string option2, string query)
@@ -85,6 +101,7 @@ namespace HelloWorld
                 Console.WriteLine("press 2 for " + option2);
                 
                 Console.WriteLine("press 3 for stats");
+                Console.WriteLine("press 4 for inventory");
                 Console.Write(">");
                 input = Console.ReadKey().KeyChar;
                 Console.WriteLine();
