@@ -7,12 +7,13 @@ namespace HelloWorld
 {
     class Game
     {
-        bool _gameOver = false;
-        string _playerName = "";
-        int _playerHealth = 100;
-        string _enemyName = "";
-        string _enemyRole = "";
-        int _enemyHealth = 100;
+        bool _gameOver = false, _exploring = false;
+        string _playerName = " ",_playerRole = "cyborg";
+        int _playerHealth = 300,_playerDamage = 100;
+
+        string _enemyName = " ", _enemyRole = " ";
+        int _enemyHealth = 100, _enemyDamage = 10;
+
         Random _rnd = new Random();
 
         void RequestName(ref string name)
@@ -46,6 +47,7 @@ namespace HelloWorld
         }
         void Explore()
         {
+            _exploring = true;
             char input = ' ';
             input = GetInput("north", "east", "you went for a walk what way do you go?", "south", "west");
             if (input == '1')
@@ -62,12 +64,12 @@ namespace HelloWorld
             {
                 //east
                 EnemyStats();
+                StartBattle(ref _playerHealth,ref _enemyHealth);
 
             }
             else if (input == '3')
             {
                 //south
-
                 Console.WriteLine("knowing the way to the next town you head south");
                 Console.WriteLine("press any key to continue!");
                 Console.ReadKey();
@@ -75,6 +77,8 @@ namespace HelloWorld
             else if (input == '4')
             {
                 //west
+                EnemyStats();
+                StartBattle(ref _playerHealth,ref _enemyHealth);
             }
         }
         void EnemyStats()
@@ -82,35 +86,45 @@ namespace HelloWorld
             string[] names = { "Isaiah", "Dexter", "Haris", "Kelly", "Brett", "Kevin", "Aaron", "Elias", "Erica", "Jacob", "Herbert", "Zachary", "Warren", "Yusuf", "Zak", "Liberty", "David", "Stanley", "Ralph", "Bilal" };
             int input = RandomNumber(0, 4);
             int randNameNum = RandomNumber(0, 19);
-            if (input == 0)
+            switch(input)
             {
-                _enemyName = names[randNameNum];
-                _enemyRole = "hunter";
-            }
-            else if (input == 1)
-            {
-                _enemyName = names[randNameNum];
-                _enemyRole = "merchant";
-            }
-            else if (input == 2)
-            {
-                _enemyName = names[randNameNum];
-                _enemyRole = "hobo";
-            }
-            else if (input == 3)
-            {
-                _enemyName = names[randNameNum];
-                _enemyRole = "cyborg";
-            }
-            else if (input == 4)
-            {
-                _enemyName = names[randNameNum];
-                _enemyRole = "merchant";
+                case 0:
+                    _enemyName = names[randNameNum];
+                    _enemyRole = "hunter";
+                    _enemyHealth = 150;
+                    _enemyDamage = 50;
+                    break;
+
+                case 1:
+                    _enemyName = names[randNameNum];
+                    _enemyRole = "merchant";
+                    _enemyHealth = 100;
+                    _enemyDamage = 10;
+                    break;
+
+                case 2:
+                    _enemyName = names[randNameNum];
+                    _enemyRole = "hobo";
+                    _enemyHealth = 50;
+                    _enemyDamage = 0;
+                    break;
+                case 3:
+                    _enemyName = names[randNameNum];
+                    _enemyRole = "cyborg";
+                    _enemyHealth = 300;
+                    _enemyDamage = 70;
+                    break;
+                case 4:
+                    _enemyName = names[randNameNum];
+                    _enemyRole = "merchant";
+                    _enemyHealth = 100;
+                    _enemyDamage = 10;
+                    break;
             }
         }
 
 
-        bool StartBattle(ref int character1Health, int character2Health)
+        bool StartBattle(ref int character1Health,ref int character2Health)
         {
             char input = ' ';
             while (character1Health > 0 && character2Health > 0)
@@ -118,8 +132,8 @@ namespace HelloWorld
                 input = GetInput("attack", "defend", "what will you do?");
                 if (input == '1')
                 {
-                    character2Health -= 10;
-                    Console.WriteLine("you hit it and did 10 damage");
+                    character2Health -= _playerDamage;
+                    Console.WriteLine("you hit it and did " + _playerDamage + " damage");
                 }
                 else if (input == '2')
                 {
@@ -127,8 +141,8 @@ namespace HelloWorld
                     Console.ReadKey();
                     continue;
                 }
-                character1Health -= 20;
-                Console.WriteLine("the enemy did 20 damage!");
+                character1Health -= _enemyDamage;
+                Console.WriteLine("the enemy did " + _enemyDamage + " damage!");
                 Console.ReadKey();
             }
             return character1Health <= 0;
@@ -137,7 +151,18 @@ namespace HelloWorld
         void ViewStats()
         {
             Console.WriteLine("your forever name: " + _playerName);
+            Console.WriteLine("your role: " + _playerRole);
             Console.WriteLine("health: " + _playerHealth);
+            Console.WriteLine("damage: " + _playerDamage);
+            Console.WriteLine();
+            if (_exploring)
+            {
+                Console.WriteLine("enemy's name: " + _enemyName);
+                Console.WriteLine("enemy's role: " + _enemyRole);
+                Console.WriteLine("enemy's health: " + _enemyHealth);
+                Console.WriteLine("enemy's damage: " + _enemyDamage);
+                Console.WriteLine();
+            }
             Console.WriteLine("press any key to continue");
             Console.Write("> ");
             Console.ReadKey();
@@ -149,6 +174,7 @@ namespace HelloWorld
             char input = ' ';
             while (input != '1')
             {
+                Console.WriteLine("system not avaliable");
                 Console.WriteLine("press 1 to leave");
             }
         }
